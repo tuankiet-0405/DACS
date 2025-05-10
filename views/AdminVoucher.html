@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý voucher - TKĐK Admin</title>
     <link rel="stylesheet" href="/public/css/stylesAdmin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="/public/js/code.js"></script>
+    <script src="/public/js/adminAuth.js"></script>
 </head>
 <body>
     <div class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin">
+                <img src="/public/image/AutomotiveCar.png" alt="TKĐK Admin">
             </div>
             <ul class="menu">
                 <li><a href="AdminTrangChu.html"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
@@ -227,8 +228,8 @@
                 </div>
             </form>
         </div>
-    </div>
-
+    </div>    <!-- Link script adminVouchers.js -->
+    <script src="/public/js/adminVouchers.js"></script>
     <script>
         // Handle active menu item
         document.querySelectorAll('.menu a').forEach(link => {
@@ -236,19 +237,6 @@
                 link.classList.add('active');
             }
         });
-
-        // Filter handling
-        document.querySelectorAll('.filter-item').forEach(filter => {
-            filter.addEventListener('click', () => {
-                document.querySelector('.filter-item.active').classList.remove('active');
-                filter.classList.add('active');
-                // Implement filter logic here
-            });
-        });
-
-        // Modal handling
-        const modal = document.getElementById('voucherModal');
-        const addBtn = document.getElementById('addVoucherBtn');
         const closeBtn = document.querySelector('.btn-close');
 
         function openModal() {
@@ -343,5 +331,8 @@
             });
         });
     </script>
+    
+    <!-- Link script adminVouchers.js để xử lý tương tác API -->
+    <script src="/js/adminVouchers.js"></script>
 </body>
 </html>

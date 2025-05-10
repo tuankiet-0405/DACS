@@ -257,6 +257,7 @@ function checkPasswordMatch() {
     const passwordField = document.getElementById('registerPassword');
     const confirmPasswordField = document.getElementById('registerConfirmPassword');
     const passwordMatchIcon = document.getElementById('passwordMatchIcon');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
 
     if (!confirmPasswordField.value) {
         passwordMatchIcon.style.display = 'none';
@@ -266,10 +267,11 @@ function checkPasswordMatch() {
     if (passwordField.value === confirmPasswordField.value) {
         passwordMatchIcon.innerHTML = '<i class="fas fa-check" style="color: #38a169;"></i>';
         passwordMatchIcon.style.display = 'block';
-        document.getElementById('confirmPasswordError').style.display = 'none';
+        confirmPasswordError.style.display = 'none';
     } else {
         passwordMatchIcon.innerHTML = '<i class="fas fa-times" style="color: #e53e3e;"></i>';
         passwordMatchIcon.style.display = 'block';
+        // Không hiển thị thông báo lỗi ở đây để tránh xung đột
     }
 }
 
@@ -293,19 +295,43 @@ function clearErrors() {
 
 // Hiển thị thông báo lỗi chung
 function showError(message) {
-    const errorContainer = document.getElementById('errorContainer');
-    if (errorContainer) {
-        errorContainer.textContent = message;
-        errorContainer.style.display = 'block';
+    // Kiểm tra xem đang ở form nào dựa trên form nào đang hiển thị
+    const container = document.getElementById('container');
+    const isRegisterForm = container.classList.contains('right-panel-active');
+    
+    if (isRegisterForm) {
+        const registerErrorContainer = document.getElementById('registerErrorContainer');
+        if (registerErrorContainer) {
+            registerErrorContainer.textContent = message;
+            registerErrorContainer.style.display = 'block';
+        }
+    } else {
+        const errorContainer = document.getElementById('errorContainer');
+        if (errorContainer) {
+            errorContainer.textContent = message;
+            errorContainer.style.display = 'block';
+        }
     }
 }
 
 // Hiển thị thông báo thành công
 function showSuccess(message) {
-    const successContainer = document.getElementById('successContainer');
-    if (successContainer) {
-        successContainer.textContent = message;
-        successContainer.style.display = 'block';
+    // Kiểm tra xem đang ở form nào dựa trên form nào đang hiển thị
+    const container = document.getElementById('container');
+    const isRegisterForm = container.classList.contains('right-panel-active');
+    
+    if (isRegisterForm) {
+        const registerSuccessContainer = document.getElementById('registerSuccessContainer');
+        if (registerSuccessContainer) {
+            registerSuccessContainer.textContent = message;
+            registerSuccessContainer.style.display = 'block';
+        }
+    } else {
+        const successContainer = document.getElementById('successContainer');
+        if (successContainer) {
+            successContainer.textContent = message;
+            successContainer.style.display = 'block';
+        }
     }
 }
 

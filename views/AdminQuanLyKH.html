@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý khách hàng - TKĐK Admin</title>
-    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
+    <title>Quản lý khách hàng - TKĐK Admin</title>    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="/public/js/code.js"></script>
+    <script src="/public/js/adminAuth.js"></script>
+    <script src="/public/js/adminBookings.js"></script>
 </head>
 <body>
     <div class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin">
+                 <a href="/public/index.html">
+        <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin" />
+        </a>
             </div>
             <ul class="menu">
                 <li><a href="AdminTrangChu.html"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
@@ -95,35 +99,8 @@
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="customer-info">
-                                <img src="https://ui-avatars.com/api/?name=Minh+Nhự&background=2563eb&color=fff" alt="Avatar" class="avatar">
-                                <div>
-                                    <p class="customer-name">Minh Nhự</p>
-                                    <small class="customer-id">KH001</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>25/04/2022</td>
-                        <td>1 ngày</td>
-                        <td>Vinfast</td>
-                        <td>1</td>
-                        <td>-</td>
-                        <td class="price">10,000,000đ</td>
-                        <td><span class="status-badge cancelled">Đã hủy</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn-action" title="Xem chi tiết">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Other rows with similar structure -->
+                </thead>                <tbody id="bookingsTableBody">
+                    <!-- Dữ liệu sẽ được điền bởi JavaScript -->
                 </tbody>
             </table>
         </div>
@@ -217,35 +194,10 @@
                 <button class="btn-secondary" onclick="closeModal()">Đóng</button>
             </div>
         </div>
-    </div>
-
-    <script>
-        // Handle active menu item
-        document.querySelectorAll('.menu a').forEach(link => {
-            if (link.getAttribute('href') === location.pathname.split('/').pop()) {
-                link.classList.add('active');
-            }
-        });
-
-        // Filter handling
-        document.querySelectorAll('.filter-item').forEach(filter => {
-            filter.addEventListener('click', () => {
-                document.querySelector('.filter-item.active').classList.remove('active');
-                filter.classList.add('active');
-                // Implement filter logic here
-            });
-        });
-
-        // Modal handling
+    </div>    <script>
+        // Handle modal handling và event listeners cho UI
         const modal = document.getElementById('orderModal');
         const closeBtn = document.querySelector('.btn-close');
-
-        document.querySelectorAll('.btn-action').forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
 
         function closeModal() {
             modal.classList.remove('active');
@@ -253,28 +205,12 @@
         }
 
         closeBtn.addEventListener('click', closeModal);
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const customerName = row.querySelector('.customer-name').textContent.toLowerCase();
-                const customerId = row.querySelector('.customer-id').textContent.toLowerCase();
-                
-                if (customerName.includes(searchTerm) || customerId.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        // Export functionality
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            alert('Đang xuất dữ liệu...');
-            // Implement export logic here
+        
+        // Khi bấm bên ngoài modal thì đóng modal
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>
