@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký xe tự lái - TKĐK</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="modern-form.css">
+    <link rel="stylesheet" href="summary-styles.css">
+    <script src="/public/js/code.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --primary-lighter: #ecfdf5;
+            --secondary: #3b82f6;
+            --dark: #1f2937;
+            --gray-dark: #4b5563;
+            --gray: #6b7280;
+            --gray-light: #9ca3af;
+            --gray-lighter: #e5e7eb;
+            --gray-lightest: #f9fafb;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --white: #ffffff;
+            --border-radius: 10px;
+            --border-radius-sm: 6px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+    </style>
+    <link rel="stylesheet" href="modern-form.css">
+    <link rel="stylesheet" href="helper-styles.css">
+    <link rel="stylesheet" href="summary-styles.css">
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background-color: var(--gray-lightest);
+            line-height: 1.6;
+        }
+
+        .register-form-container {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+            min-height: calc(100vh - 80px);
+            padding: 3rem 1rem;
+        }        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .form-header p {
+            color: var(--gray);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid #e5e7eb;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            font-size: 1.125rem;
+        }
+
+        .progress-step.active .step-number {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            transform: scale(1.1);
+            box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.2);
+        }
+
+        .progress-step.completed .step-number {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .progress-step.completed .step-number::after {
+            content: '✓';
+            position: absolute;
+            font-size: 1.25rem;
+        }
+
+        .step-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .progress-step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: var(--gray-dark);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            background-color: #f8fafc;
+            color: var(--dark);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
+        }
+
+        .form-control:hover {
+            border-color: #cbd5e1;
+            background-color: #f1f5f9;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+            outline: none;
+            background-color: var(--white);
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+            opacity: 0.7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group-animated .form-control {
+            padding: 1rem 1rem 0.5rem;
+        }
+
+        .form-group-animated .form-label {
+            position: absolute;
+            top: 0.85rem;
+            left: 1rem;
+            margin: 0;
+            background: transparent;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        .form-group-animated .form-control:focus ~ .form-label,
+        .form-group-animated .form-control:not(:placeholder-shown) ~ .form-label {
+            top: 0.3rem;
+            left: 0.8rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+        }        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: var(--border-radius);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #fafbfc;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(209, 250, 229, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .upload-area:hover::before {
+            opacity: 0.02;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.25rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .upload-icon i {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .upload-text {
+            color: var(--gray-dark);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: var(--gray);
+            opacity: 0.8;
+        }        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            transform: scale(1);
+            border: 2px solid transparent;
+        }
+
+        .preview-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-light);
+            z-index: 1;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.5) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .preview-item:hover::after {
+            opacity: 1;
+        }
+
+        .remove-preview {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+          .preview-item:hover .remove-preview {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .remove-preview {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 0.875rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }        .btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            letter-spacing: 0.01em;
+        }
+
+        .btn-back {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-next:hover,
+        .btn-submit:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-next::before,
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .btn-next:active::before,
+        .btn-submit:active::before {
+            transform: translate(-50%, -50%) scale(20);
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-form-container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Đăng ký xe tự lái</h2>
+                <p>Vui lòng điền đầy đủ thông tin về xe của bạn</p>
+            </div>
+
+            <div class="form-progress">
+                <div class="progress-line"></div>
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Thông tin cơ bản</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Thông tin chi tiết</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Hình ảnh</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Xác nhận</div>
+                </div>
+            </div>
+
+            <form id="carRegisterForm" enctype="multipart/form-data">
+                <!-- Step 1: Basic Information -->
+                <div class="form-section active" data-step="1">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Hãng xe</label>
+                            <select class="form-control" name="brand" id="brand" required>
+                                <option value="">Chọn hãng xe</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Mazda">Mazda</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="KIA">KIA</option>
+                                <option value="VinFast">VinFast</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mẫu xe</label>
+                            <input type="text" class="form-control" name="model" id="model" placeholder="VD: Vios"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Năm sản xuất</label>
+                            <input type="number" class="form-control" name="year" id="year" min="2000" max="2025"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số chỗ ngồi</label>
+                            <select class="form-control" name="seats" id="seats" required>
+                                <option value="">Chọn số chỗ</option>
+                                <option value="4">4 chỗ</option>
+                                <option value="5">5 chỗ</option>
+                                <option value="7">7 chỗ</option>
+                                <option value="16">16 chỗ</option>
+                                <option value="29">29 chỗ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Loại hộp số</label>
+                            <select class="form-control" name="transmission" id="transmission" required>
+                                <option value="">Chọn loại hộp số</option>
+                                <option value="Số sàn">Số sàn</option>
+                                <option value="Số tự động">Số tự động</option>
+                                <option value="Số CVT">Số CVT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Loại nhiên liệu</label>
+                            <select class="form-control" name="fuel" id="fuel" required>
+                                <option value="">Chọn loại nhiên liệu</option>
+                                <option value="Xăng">Xăng</option>
+                                <option value="Dầu diesel">Dầu diesel</option>
+                                <option value="Điện">Điện</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> <!-- Step 2: Detailed Information -->
+                <div class="form-section" data-step="2">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="license_plate">Biển số xe</label>
+                            <input type="text" class="form-control" name="license_plate" id="license_plate"
+                                placeholder="VD: 30A-12345" required>
+                        </div>                        <div class="form-group">
+                            <label class="form-label" for="price_per_day">Giá cho thuê (VND/ngày)</label>
+                            <input type="number" class="form-control" name="price_per_day" id="price_per_day" min="100000"
+                                step="10000" placeholder="VND/ngày" value="100000" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="deposit">Tiền đặt cọc (VND)</label>
+                            <input type="number" class="form-control" name="deposit" id="deposit" min="0" step="100000"
+                                placeholder="VND" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Giới hạn số KM/ngày</label>
+                            <input type="number" class="form-control" name="km_limit" id="km_limit" min="0"
+                                placeholder="Không giới hạn để trống">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ đón/trả xe</label>
+                        <input type="text" class="form-control" name="location" id="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mô tả xe</label>
+                        <textarea class="form-control" name="description" id="description" rows="4"
+                            placeholder="Mô tả chi tiết về xe của bạn..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tính năng xe</label>
+                        <div class="features-grid"
+                            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_gps" name="features" value="GPS">
+                                <label for="feature_gps">GPS</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_bluetooth" name="features" value="Bluetooth">
+                                <label for="feature_bluetooth">Bluetooth</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_backup_camera" name="features" value="Camera lùi">
+                                <label for="feature_backup_camera">Camera lùi</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_usb" name="features" value="Cổng USB">
+                                <label for="feature_usb">Cổng USB</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_sunroof" name="features" value="Cửa sổ trời">
+                                <label for="feature_sunroof">Cửa sổ trời</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_carplay" name="features" value="Apple CarPlay">
+                                <label for="feature_carplay">Apple CarPlay</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_android_auto" name="features" value="Android Auto">
+                                <label for="feature_android_auto">Android Auto</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_airbag" name="features" value="Túi khí">
+                                <label for="feature_airbag">Túi khí</label>
+                            </div>
+                            <div class="feature-checkbox">
+                                <input type="checkbox" id="feature_abs" name="features" value="Phanh ABS">
+                                <label for="feature_abs">Phanh ABS</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Images -->
+                <div class="form-section" data-step="3">
+                    <div class="form-group">
+                        <label class="form-label">Hình ảnh xe (tối thiểu 4 hình)</label>
+                        <div class="image-upload-guide"
+                            style="margin-bottom: 1rem; background: #f0fff4; padding: 0.75rem; border-radius: 8px; border: 1px solid #c6f6d5;">
+                            <p style="margin-bottom: 0.5rem; font-weight: 500; color: #38a169;">Hướng dẫn chụp ảnh xe:
+                            </p>
+                            <ul style="margin-left: 1.5rem; color: #4a5568; font-size: 0.875rem;">
+                                <li>Chụp đầy đủ 4 góc ngoại thất: trước, sau, hai bên</li>
+                                <li>Chụp toàn cảnh nội thất và các chi tiết đặc biệt</li>
+                                <li>Ảnh rõ nét, đủ ánh sáng và không bị chói</li>
+                                <li>Không chụp quá xa hoặc quá gần</li>
+                            </ul>
+                        </div>
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Kéo thả hoặc click để tải ảnh lên</div>
+                            <div class="upload-hint">Hỗ trợ JPG, PNG (Tối đa 5MB/ảnh)</div>
+                            <input type="file" id="fileInput" name="car_images" multiple accept="image/*"
+                                style="display: none;">
+                        </div>
+                        <div class="preview-grid" id="previewGrid"></div>
+                        <div id="imageError" class="error-message"
+                            style="color: #e53e3e; margin-top: 0.5rem; display: none;">Vui lòng tải lên ít nhất 4 hình
+                            ảnh của xe</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Giấy tờ xe</label>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Đăng ký xe</label>
+                                <div class="upload-area upload-area-small" id="registrationUploadArea">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-file-upload"></i>
+                                    </div>
+                                    <div class="upload-text">Tải lên đăng ký xe</div>
+                                    <input type="file" id="registrationInput" name="registration_image" accept="image/*"
+                                        style="display: none;">
+                                </div>
+                                <div id="registrationPreview" class="document-preview"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bảo hiểm xe</label>
+                                <div class="upload-area upload-area-small" id="insuranceUploadArea">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-file-upload"></i>
+                                    </div>
+                                    <div class="upload-text">Tải lên bảo hiểm xe</div>
+                                    <input type="file" id="insuranceInput" name="insurance_image" accept="image/*"
+                                        style="display: none;">
+                                </div>
+                                <div id="insurancePreview" class="document-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="form-section" data-step="4">
+                    <div class="form-group">
+                        <div class="summary-card"
+                            style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">
+                                Thông tin xe đăng ký</h3>
+                            <div class="summary-content"
+                                style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Hãng xe:</p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_brand">-</p>
+                                </div>
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Mẫu xe:</p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_model">-</p>
+                                </div>
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Biển số:</p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_license_plate">-</p>
+                                </div>
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Giá thuê:
+                                    </p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_price">-</p>
+                                </div>
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Số chỗ:</p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_seats">-</p>
+                                </div>
+                                <div class="summary-item">
+                                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Năm sản
+                                        xuất:</p>
+                                    <p style="color: #1f2937; font-weight: 500;" id="summary_year">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary-card"
+                            style="background: #f0fff4; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #10b981;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Dự
+                                kiến thu nhập</h3>
+                            <div class="income-estimate"
+                                style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-money-bill-wave" style="color: #10b981;"></i>
+                                <p style="color: #1f2937;">Với giá thuê <span id="summary_daily_price"
+                                        style="font-weight: 600;">0</span> VND/ngày, bạn có thể kiếm được khoảng:</p>
+                            </div>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+                                <div
+                                    style="text-align: center; padding: 0.75rem; background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                    <p style="font-size: 0.875rem; color: #6b7280;">Thu nhập / tuần</p>
+                                    <p style="font-size: 1.125rem; font-weight: 600; color: #047857;" id="income_week">0
+                                        VND</p>
+                                </div>
+                                <div
+                                    style="text-align: center; padding: 0.75rem; background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                    <p style="font-size: 0.875rem; color: #6b7280;">Thu nhập / tháng</p>
+                                    <p style="font-size: 1.125rem; font-weight: 600; color: #047857;" id="income_month">
+                                        0 VND</p>
+                                </div>
+                                <div
+                                    style="text-align: center; padding: 0.75rem; background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                    <p style="font-size: 0.875rem; color: #6b7280;">Thu nhập / năm</p>
+                                    <p style="font-size: 1.125rem; font-weight: 600; color: #047857;" id="income_year">0
+                                        VND</p>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.75rem; font-style: italic;">*
+                                Ước tính dựa trên tỷ lệ thuê 60% thời gian trong năm</p>
+                        </div>
+                        <label class="form-label">Điều khoản và điều kiện</label>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <p style="margin-bottom: 0.5rem; color: #4b5563;">Bằng việc đăng ký, bạn đồng ý với:</p>
+                            <ul style="list-style-type: disc; margin-left: 1.5rem; color: #6b7280;">
+                                <li>Cung cấp thông tin chính xác về xe</li>
+                                <li>Tuân thủ quy định của TK-DK</li>
+                                <li>Chịu trách nhiệm về tình trạng xe</li>
+                                <li>Đồng ý với mức phí dịch vụ 10% trên mỗi giao dịch thuê xe</li>
+                                <li>Đồng ý với <a href="/views/DieuKhoanDichVu.html" target="_blank"
+                                        style="color: #10b981; text-decoration: underline;">Điều khoản dịch vụ</a> và <a
+                                        href="/views/QuyCheHoatDong.html" target="_blank"
+                                        style="color: #10b981; text-decoration: underline;">Quy chế hoạt động</a> của
+                                    TK-DK</li>
+                            </ul>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" style="color: #4b5563;">Tôi đồng ý với các điều khoản trên</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-back" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-left"></i>
+                        Quay lại
+                    </button>
+                    <button type="button" class="btn btn-next" id="nextBtn">
+                        Tiếp theo
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn" style="display: none;">
+                        Hoàn tất đăng ký
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+
+    </footer>    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <!-- Thêm script hỗ trợ thông báo offline -->
+    <script src="/views/carregister/offline_notifications.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        const form = document.getElementById('carRegisterForm');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Lưu trữ file ảnh
+        let carImages = [];
+        let registrationImage = null;
+        let insuranceImage = null;
+
+        // Xử lý chuyển đổi giữa các bước
+        function updateStep(step) {
+            // Kiểm tra tính hợp lệ của dữ liệu trước khi chuyển bước
+            if (step > currentStep && !validateCurrentStep(currentStep)) {
+                return false;
+            }
+
+            // Lưu dữ liệu và cập nhật tóm tắt nếu chuyển đến bước xác nhận
+            if (step === 4) {
+                updateSummary();
+            }
+
+            // Cập nhật UI
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelector(`.form-section[data-step="${step}"]`).classList.add('active');
+
+            document.querySelectorAll('.progress-step').forEach(progressStep => {
+                progressStep.classList.remove('active');
+                if (parseInt(progressStep.dataset.step) < step) {
+                    progressStep.classList.add('completed');
+                } else if (parseInt(progressStep.dataset.step) === step) {
+                    progressStep.classList.add('active');
+                } else {
+                    progressStep.classList.remove('completed');
+                }
+            });
+
+            // Hiển thị/ẩn nút thích hợp
+            prevBtn.style.display = step > 1 ? 'flex' : 'none';
+            nextBtn.style.display = step < totalSteps ? 'flex' : 'none';
+            submitBtn.style.display = step === totalSteps ? 'flex' : 'none';
+
+            // Cập nhật bước hiện tại
+            currentStep = step;
+
+            // Cuộn lên đầu form
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+
+            return true;
+        }
+
+        // Kiểm tra tính hợp lệ của dữ liệu theo từng bước
+        function validateCurrentStep(step) {
+            let isValid = true;
+
+            if (step === 1) {
+                // Kiểm tra thông tin cơ bản
+                const brand = document.getElementById('brand').value;
+                const model = document.getElementById('model').value;
+                const year = document.getElementById('year').value;
+                const seats = document.getElementById('seats').value;
+                const transmission = document.getElementById('transmission').value;
+                const fuel = document.getElementById('fuel').value;
+
+                if (!brand || !model || !year || !seats || !transmission || !fuel) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thiếu thông tin',
+                        text: 'Vui lòng điền đầy đủ thông tin cơ bản về xe.'
+                    });
+                    isValid = false;
+                }
+            } else if (step === 2) {
+                // Kiểm tra thông tin chi tiết
+                const licensePlate = document.getElementById('license_plate').value;
+                const pricePerDay = document.getElementById('price_per_day').value;
+                const location = document.getElementById('location').value;
+
+                if (!licensePlate || !pricePerDay || !location) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thiếu thông tin',
+                        text: 'Vui lòng điền đầy đủ thông tin chi tiết về xe.'
+                    });
+                    isValid = false;
+                }
+
+                if (pricePerDay < 100000) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Giá cho thuê quá thấp',
+                        text: 'Giá cho thuê nên ít nhất 100,000 VND/ngày.'
+                    });
+                    isValid = false;
+                }
+            } else if (step === 3) {
+                // Kiểm tra hình ảnh xe
+                const imageCount = document.querySelectorAll('#previewGrid .preview-item').length;
+
+                if (imageCount < 4) {
+                    document.getElementById('imageError').style.display = 'block';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thiếu hình ảnh',
+                        text: 'Vui lòng tải lên ít nhất 4 hình ảnh của xe.'
+                    });
+                    isValid = false;
+                } else {
+                    document.getElementById('imageError').style.display = 'none';
+                }
+
+                // Kiểm tra giấy tờ xe
+                if (!registrationImage) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thiếu giấy tờ',
+                        text: 'Vui lòng tải lên hình ảnh đăng ký xe.'
+                    });
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        // Cập nhật thông tin tóm tắt ở bước xác nhận
+        function updateSummary() {
+            // Lấy giá trị từ form
+            const brand = document.getElementById('brand').value;
+            const model = document.getElementById('model').value;
+            const year = document.getElementById('year').value;
+            const seats = document.getElementById('seats').value;
+            const licensePlate = document.getElementById('license_plate').value;
+            const pricePerDay = document.getElementById('price_per_day').value;
+
+            // Cập nhật tóm tắt
+            document.getElementById('summary_brand').textContent = brand;
+            document.getElementById('summary_model').textContent = model;
+            document.getElementById('summary_license_plate').textContent = licensePlate;
+            document.getElementById('summary_price').textContent = formatCurrency(pricePerDay) + ' VND/ngày';
+            document.getElementById('summary_seats').textContent = seats + ' chỗ';
+            document.getElementById('summary_year').textContent = year;
+
+            // Cập nhật ước tính thu nhập
+            document.getElementById('summary_daily_price').textContent = formatCurrency(pricePerDay);
+
+            // Tính toán thu nhập dự kiến (giả sử tỷ lệ thuê 60% thời gian)
+            const weeklyIncome = pricePerDay * 7 * 0.6;
+            const monthlyIncome = pricePerDay * 30 * 0.6;
+            const yearlyIncome = pricePerDay * 365 * 0.6;
+
+            document.getElementById('income_week').textContent = formatCurrency(weeklyIncome) + ' VND';
+            document.getElementById('income_month').textContent = formatCurrency(monthlyIncome) + ' VND';
+            document.getElementById('income_year').textContent = formatCurrency(yearlyIncome) + ' VND';
+        }
+
+        // Format số thành định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN').format(amount);
+        }
+
+        // Xử lý nút chuyển bước
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                updateStep(currentStep + 1);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                updateStep(currentStep - 1);
+            }
+        });
+
+        // Xử lý upload hình ảnh xe
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewGrid = document.getElementById('previewGrid');
+
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#10b981';
+            uploadArea.style.backgroundColor = '#f8f9fa';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#e5e7eb';
+            uploadArea.style.backgroundColor = 'white';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#e5e7eb';
+            uploadArea.style.backgroundColor = 'white';
+
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', () => {
+            handleFiles(fileInput.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    // Kiểm tra kích thước file (giới hạn 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'File quá lớn',
+                            text: 'Kích thước file không được vượt quá 5MB'
+                        });
+                        return;
+                    }
+
+                    // Lưu file vào mảng
+                    carImages.push(file);
+
+                    // Hiển thị preview
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const preview = document.createElement('div');
+                        preview.className = 'preview-item';
+                        preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <div class="remove-preview">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        `;
+
+                        preview.querySelector('.remove-preview').addEventListener('click', () => {
+                            // Xóa file khỏi mảng
+                            const index = carImages.indexOf(file);
+                            if (index > -1) {
+                                carImages.splice(index, 1);
+                            }
+
+                            // Xóa preview
+                            preview.remove();
+
+                            // Cập nhật thông báo lỗi
+                            if (carImages.length < 4) {
+                                document.getElementById('imageError').style.display = 'block';
+                            } else {
+                                document.getElementById('imageError').style.display = 'none';
+                            }
+                        });
+
+                        previewGrid.appendChild(preview);
+
+                        // Ẩn thông báo lỗi nếu đã đủ ảnh
+                        if (carImages.length >= 4) {
+                            document.getElementById('imageError').style.display = 'none';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Xử lý upload giấy tờ xe
+        const registrationUploadArea = document.getElementById('registrationUploadArea');
+        const registrationInput = document.getElementById('registrationInput');
+        const registrationPreview = document.getElementById('registrationPreview');
+
+        registrationUploadArea.addEventListener('click', () => {
+            registrationInput.click();
+        });
+
+        registrationInput.addEventListener('change', () => {
+            handleDocumentFile(registrationInput.files[0], registrationPreview, 'registration');
+        });
+
+        const insuranceUploadArea = document.getElementById('insuranceUploadArea');
+        const insuranceInput = document.getElementById('insuranceInput');
+        const insurancePreview = document.getElementById('insurancePreview');
+
+        insuranceUploadArea.addEventListener('click', () => {
+            insuranceInput.click();
+        });
+
+        insuranceInput.addEventListener('change', () => {
+            handleDocumentFile(insuranceInput.files[0], insurancePreview, 'insurance');
+        });
+
+        function handleDocumentFile(file, previewElement, type) {
+            if (file && file.type.startsWith('image/')) {
+                // Kiểm tra kích thước file (giới hạn 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File quá lớn',
+                        text: 'Kích thước file không được vượt quá 5MB'
+                    });
+                    return;
+                }
+
+                // Lưu file
+                if (type === 'registration') {
+                    registrationImage = file;
+                } else if (type === 'insurance') {
+                    insuranceImage = file;
+                }
+
+                // Hiển thị preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewElement.innerHTML = `
+                        <div style="position: relative; margin-top: 0.5rem;">
+                            <img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 120px; border-radius: 8px;">
+                            <div class="remove-preview" style="position: absolute; top: 0.25rem; right: 0.25rem; background: rgba(0,0,0,0.5); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                    `;
+
+                    previewElement.querySelector('.remove-preview').addEventListener('click', () => {
+                        // Xóa file
+                        if (type === 'registration') {
+                            registrationImage = null;
+                        } else if (type === 'insurance') {
+                            insuranceImage = null;
+                        }
+
+                        // Xóa preview
+                        previewElement.innerHTML = '';
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        }        // Xử lý gửi form
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            console.log('Đã gửi yêu cầu đăng ký xe!');
+
+            // Kiểm tra đồng ý điều khoản
+            if (!document.getElementById('terms').checked) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Chưa đồng ý điều khoản',
+                    text: 'Vui lòng đồng ý với điều khoản và điều kiện để tiếp tục.'
+                });
+                return;
+            }
+            
+            // Debug thông tin form trước khi gửi
+            const formElement = document.getElementById('carRegisterForm');
+            console.log('DEBUG FORM VALUES:');
+            console.log('- brand:', document.getElementById('brand').value);
+            console.log('- model:', document.getElementById('model').value);
+            console.log('- year:', document.getElementById('year').value);
+            console.log('- seats:', document.getElementById('seats').value);
+            console.log('- transmission:', document.getElementById('transmission').value);
+            console.log('- fuel:', document.getElementById('fuel').value);
+            console.log('- license_plate:', document.getElementById('license_plate').value);
+            console.log('- price_per_day:', document.getElementById('price_per_day').value);
+            console.log('- location:', document.getElementById('location').value);
+
+            // Kiểm tra số lượng ảnh
+            if (carImages.length < 4) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thiếu hình ảnh',
+                    text: 'Vui lòng tải lên ít nhất 4 hình ảnh của xe.'
+                });
+                return;
+            }
+
+            // Kiểm tra giấy tờ xe
+            if (!registrationImage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thiếu giấy tờ',
+                    text: 'Vui lòng tải lên hình ảnh đăng ký xe.'
+                });
+                return;
+            }
+
+            // Tạo FormData để gửi dữ liệu (bao gồm file)
+            const formData = new FormData();
+
+            // Thêm dữ liệu cơ bản
+            const brand = document.getElementById('brand').value;
+            const model = document.getElementById('model').value;
+            const year = document.getElementById('year').value;
+            const seats = document.getElementById('seats').value;
+            const transmission = document.getElementById('transmission').value;
+            const fuel = document.getElementById('fuel').value;
+            const licensePlate = document.getElementById('license_plate').value;
+            const pricePerDay = document.getElementById('price_per_day').value;
+            const location = document.getElementById('location').value;
+
+            formData.append('brand', brand);
+            formData.append('model', model);
+            formData.append('year', year);
+            formData.append('seats', seats);
+            formData.append('transmission', transmission);
+            formData.append('fuel', fuel);
+
+            // Thêm dữ liệu chi tiết
+            formData.append('license_plate', licensePlate);
+            formData.append('price_per_day', pricePerDay);
+            formData.append('deposit', document.getElementById('deposit').value || 0);
+            formData.append('km_limit', document.getElementById('km_limit').value || 0);
+            formData.append('location', location);
+            formData.append('description', document.getElementById('description').value);
+
+            // Thêm tính năng xe
+            const selectedFeatures = [];
+            document.querySelectorAll('input[name="features"]:checked').forEach(checkbox => {
+                selectedFeatures.push(checkbox.value);
+            });
+            formData.append('features', JSON.stringify(selectedFeatures));
+
+            // Loại xe (tự lái)
+            formData.append('type', 'self-drive');
+
+            // Thêm các file ảnh
+            carImages.forEach((file, index) => {
+                formData.append('car_images', file);
+            });
+
+            // Thêm file giấy tờ
+            if (registrationImage) {
+                formData.append('registration_image', registrationImage);
+            }
+
+            if (insuranceImage) {
+                formData.append('insurance_image', insuranceImage);
+            }
+
+            // Hiển thị loading
+            Swal.fire({
+                title: 'Đang đăng ký...',
+                html: 'Vui lòng đợi trong giây lát...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                // Lấy token từ localStorage
+                const token = localStorage.getItem('token');
+                const userData = JSON.parse(localStorage.getItem('user') || '{}');
+                if (!token) {
+                    throw new Error('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.');
+                }
+
+                // Hiển thị thông báo tạm thời cho người dùng
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Đã gửi yêu cầu đăng ký xe, vui lòng đợi trong giây lát',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                console.log('Đang gửi request đến server với path: /api/cars');
+                console.log('Token: ' + token.substring(0, 15) + '...');
+
+                // Gửi dữ liệu đến server
+                const response = await axios.post('/api/cars', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Server response:', response.data);
+
+                // Xử lý phản hồi từ server
+                if (response.data.success) {
+                    const carId = response.data.data.id;
+                    // Tạo thông báo chi tiết cho admin
+                    try {
+                        // Thông tin chi tiết về xe để gửi trong thông báo
+                        const carDetails = `
+                                Hãng xe: ${brand}
+                                Mẫu xe: ${model}
+                                Biển số: ${licensePlate}
+                                Năm sản xuất: ${year}
+                                Số chỗ: ${seats}
+                                Giá thuê: ${formatCurrency(pricePerDay)} VND/ngày
+                                Địa điểm: ${location}
+                            `;
+
+                        console.log('Đang gửi thông báo đến admin với path: /api/notifications');
+                        // Gửi thông báo đến admin
+                        const notifyResponse = await axios.post('/api/notifications', {
+                            tieu_de: 'Xe mới cần duyệt',
+                            noi_dung: `Người dùng ${userData.ho_ten || ''} (ID: ${userData.id || ''}) vừa đăng ký xe ${brand} ${model} với biển số ${licensePlate}. ${carDetails}`,
+                            loai_thong_bao: 'car_registration', // Loại thông báo cụ thể cho đăng ký xe
+                            lien_ket: `/admin/cars/view/${carId}` // Liên kết đến trang xét duyệt xe
+                        }, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        console.log('Kết quả gửi thông báo:', notifyResponse.data);
+                        if (notifyResponse.data.success) {
+                            console.log('Đã gửi thông báo thành công đến admin về xe mới');
+                        } else {
+                            console.error('Không thể gửi thông báo đến admin: ', notifyResponse.data.message);
+                        }
+                    } catch (notifyError) {
+                        console.error('Lỗi khi gửi thông báo tới admin:', notifyError);
+                        console.log('Chi tiết lỗi:', notifyError.response?.data || notifyError.message);
+                    }
+
+                    // Hiển thị thông báo thành công
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        html: `
+                            <p>Xe của bạn đã được đăng ký thành công và đang chờ admin xét duyệt.</p>
+                            <p class="mt-2" style="color: #10b981; font-weight: 500;">Thông tin cơ bản:</p>
+                            <div style="text-align: left; background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <p><b>Hãng xe:</b> ${brand}</p>
+                                <p><b>Mẫu xe:</b> ${model}</p>
+                                <p><b>Biển số:</b> ${licensePlate}</p>
+                                <p><b>Giá thuê:</b> ${formatCurrency(pricePerDay)} VND/ngày</p>
+                            </div>
+                            <p style="font-size: 0.9rem; margin-top: 12px; color: #6b7280;">Admin sẽ xem xét thông tin xe của bạn và duyệt trong thời gian sớm nhất.</p>
+                        `,
+                        confirmButtonText: 'Xem xe của tôi',
+                        confirmButtonColor: '#10b981',
+                        showCancelButton: true,
+                        cancelButtonText: 'Đóng'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Chuyển hướng đến trang quản lý xe
+                            window.location.href = '/views/mycars.html';
+                        }
+                    });
+                } else {
+                    throw new Error(response.data.message || 'Có lỗi xảy ra khi đăng ký xe.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi đăng ký xe:', error);
+
+                // Lấy thông tin lỗi chi tiết nếu có
+                let errorMessage = 'Đã xảy ra lỗi khi đăng ký xe. Vui lòng thử lại sau.';
+                let errorDetails = '';
+
+                if (error.response) {
+                    console.log('Response error data:', error.response.data);
+                    // Lỗi từ server với response
+                    errorMessage = error.response.data.message || errorMessage;
+                    errorDetails = error.response.status ? `Mã lỗi: ${error.response.status}` : '';
+                } else if (error.request) {
+                    // Lỗi không nhận được response
+                    errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối internet và thử lại.';
+                    console.log('Request error:', error.request);
+                } else {
+                    // Lỗi khác
+                    errorMessage = error.message;
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đăng ký thất bại',
+                    html: `<p>${errorMessage}</p>${errorDetails ? `<p style="font-size: 0.8rem; color: #777;">${errorDetails}</p>` : ''}`,
+                    footer: '<a href="/contact">Liên hệ hỗ trợ</a>'
+                });
+            }
+        });
+
+        // Cập nhật ước tính thu nhập khi giá thay đổi
+        document.getElementById('price_per_day').addEventListener('input', function () {
+            const pricePerDay = this.value;
+            if (pricePerDay && !isNaN(pricePerDay)) {
+                // Tính toán thu nhập dự kiến (giả sử tỷ lệ thuê 60% thời gian)
+                const weeklyIncome = pricePerDay * 7 * 0.6;
+                const monthlyIncome = pricePerDay * 30 * 0.6;
+                const yearlyIncome = pricePerDay * 365 * 0.6;
+
+                // Định dạng số
+                document.getElementById('summary_daily_price').textContent = formatCurrency(pricePerDay);
+                document.getElementById('income_week').textContent = formatCurrency(weeklyIncome) + ' VND';
+                document.getElementById('income_month').textContent = formatCurrency(monthlyIncome) + ' VND';
+                document.getElementById('income_year').textContent = formatCurrency(yearlyIncome) + ' VND';
+            }
+        });
+
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        document.addEventListener('DOMContentLoaded', function () {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Yêu cầu đăng nhập',
+                    text: 'Bạn cần đăng nhập để đăng ký xe.',
+                    confirmButtonText: 'Đăng nhập ngay',
+                    confirmButtonColor: '#10b981'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lưu URL hiện tại để sau khi đăng nhập quay lại
+                        sessionStorage.setItem('redirectAfterLogin', window.location.href);
+                        // Chuyển hướng đến trang đăng nhập
+                        window.location.href = '/views/login.html';
+                    } else {
+                        // Quay lại trang chủ
+                        window.location.href = '/public/index.html';
+                    }
+                });
+            }
+        });        // Kiểm tra biển số xe hợp lệ
+        document.getElementById('license_plate').addEventListener('blur', function () {
+            const licensePlate = this.value;
+            if (licensePlate) {
+                // Mẫu regex cho biển số xe Việt Nam
+                const regex = /^[0-9]{2}[A-Z]{1,2}-[0-9]{4,5}$/;
+                if (!regex.test(licensePlate)) {
+                    this.setCustomValidity('Biển số xe không hợp lệ (VD: 30A-12345)');
+                    this.reportValidity();
+                } else {
+                    this.setCustomValidity('');
+                }
+            }
+        });
+
+        // Thêm validation function để kiểm tra tất cả các trường trước khi submit
+        document.getElementById('carRegisterForm').addEventListener('submit', function(e) {
+            // Kiểm tra biển số xe
+            const licensePlate = document.getElementById('license_plate').value;
+            const regex = /^[0-9]{2}[A-Z]{1,2}-[0-9]{4,5}$/;
+            
+            if (!regex.test(licensePlate)) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Biển số không hợp lệ',
+                    text: 'Vui lòng nhập đúng định dạng biển số (VD: 30A-12345)'
+                });
+                return false;
+            }
+
+            // Double check các trường bắt buộc
+            const requiredFields = [
+                'brand', 'model', 'year', 'seats', 'transmission', 'fuel',
+                'license_plate', 'price_per_day', 'location'
+            ];
+            
+            const missingFields = [];
+            
+            for (const field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element || !element.value || element.value.trim() === '') {
+                    missingFields.push(field);
+                }
+            }
+            
+            if (missingFields.length > 0) {
+                e.preventDefault();
+                console.error('Thiếu các trường bắt buộc:', missingFields);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thiếu thông tin',
+                    html: 'Vui lòng điền đầy đủ các trường bắt buộc:<br>' + 
+                          missingFields.join('<br>')
+                });
+                return false;
+            }
+        });
+
+        // Thêm CSS cho document preview
+        const style = document.createElement('style');
+        style.textContent = `
+            .document-preview {
+                margin-top: 0.5rem;
+                min-height: 40px;
+            }
+            
+            .upload-area-small {
+                padding: 1rem;
+                min-height: 120px;
+            }
+            
+            .upload-area-small .upload-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .feature-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .feature-checkbox label {
+                color: #4b5563;
+                font-size: 0.875rem;
+                cursor: pointer;
+            }
+            
+            /* Hiệu ứng khi tải ảnh */
+            @keyframes pulse {
+                0% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.6;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            
+            .uploading {
+                animation: pulse 1.5s infinite;
+                border-color: #10b981;
+            }
+        `;        document.head.appendChild(style);
+    </script>
+    <!-- Parche de validación adicional para solucionar problemas de envío -->
+    <script src="/views/carregister/form_validation_patch.js"></script>
+</body>
+
+</html>
