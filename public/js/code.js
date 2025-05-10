@@ -551,7 +551,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
 
-    });    // Password change form handling
+    });
+
+    // Password change form handling
 
     const passwordChangeForm = document.getElementById('passwordChangeForm');
 
@@ -574,40 +576,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
 
             }
-            
-            if (newPassword.length < 6) {
-                alert('Mật khẩu mới phải có ít nhất 6 ký tự!');
-                return;
-            }
-            
-            // Get user ID from local storage
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || !userData.id) {
-                alert('Bạn cần đăng nhập lại để thực hiện thao tác này!');
-                window.location.href = '/views/login.html';
-                return;
-            }
-            
-            const userId = userData.id;
 
             try {
-                const submitButton = document.querySelector('.btn-change-password');
-                const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-                submitButton.disabled = true;
-                
-                // Call the API to change password
-                const response = await fetch(`/api/users/${userId}/password`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify({
-                        mat_khau_cu: currentPassword,
-                        mat_khau: newPassword,
-                        xac_nhan_mat_khau: confirmPassword
-                    })
+
+                const response = await fetch('/api/change-password', {
+
+                    method: 'POST',
+
+                    headers: { 'Content-Type': 'application/json' },
+
+                    body: JSON.stringify({ currentPassword, newPassword })
+
                 });
 
                 const data = await response.json();
@@ -623,18 +602,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.message || 'Đổi mật khẩu thất bại!');
 
                 }
-                
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
 
             } catch (error) {
 
-                console.error('Lỗi khi đổi mật khẩu:', error);
                 alert('Có lỗi xảy ra, vui lòng thử lại sau!');
-                
-                const submitButton = document.querySelector('.btn-change-password');
-                submitButton.innerHTML = '<i class="fas fa-key"></i> Đổi mật khẩu';
-                submitButton.disabled = false;
+
             }
 
         };

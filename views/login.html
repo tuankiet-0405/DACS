@@ -152,7 +152,6 @@
         .form-group {
             width: 100%;
             margin-bottom: 15px;
-            position: relative;
         }
 
         .password-group {
@@ -182,30 +181,10 @@
 
         .password-match-icon {
             position: absolute;
-            right: 10px;
-            top: 50%;    /* Canh giữa theo chiều dọc */
+            right: 15px;
+            top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            pointer-events: none;
-            color: #e53e3e; /* Màu đỏ cho dấu X */
-        }
-
-        .password-match-icon i.fa-check {
-            color: #38a169; /* Màu xanh cho dấu check */
-        }
-
-        .error-message {
-            position: relative;
-            z-index: 2; /* Đảm bảo thông báo lỗi hiển thị trên cùng */
-            margin-top: 5px; /* Tạo khoảng cách với ô input phía trên */
-            text-align: left;
-            width: 100%;
         }
 
         button {
@@ -488,19 +467,6 @@
         .admin-login:hover {
             color: #3182ce;
         }
-
-        /* Đảm bảo các phần tử con nằm đúng vị trí tương đối với ô input */
-        .form-group input {
-            width: 100%;
-            padding-right: 40px; /* Tạo không gian cho biểu tượng */
-            box-sizing: border-box;
-            height: 45px; /* Cố định chiều cao input để dễ định vị biểu tượng */
-        }
-
-        /* Input kiểu password để đảm bảo có khoảng trống cho icon */
-        .form-group input[type="password"] {
-            padding-right: 35px;
-        }
     </style>
 </head>
 <body>
@@ -509,8 +475,8 @@
             <form id="registerForm">
                 <h1 style="margin-top: 2rem;">Tạo tài khoản</h1>
                 
-                <div id="registerErrorContainer" class="error-message" style="display: none; width: 100%; color: #e53e3e; margin-bottom: 10px;"></div>
-                <div id="registerSuccessContainer" class="success-message" style="display: none; width: 100%; color: #38a169; margin-bottom: 10px;"></div>
+                <div id="errorContainer" class="error-message" style="display: none;"></div>
+                <div id="successContainer" class="success-message" style="display: none;"></div>
             
                 <div class="form-group">
                     <input type="text" id="registerName" name="ho_ten" placeholder="Họ và tên" required />

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Form Debug Tester</h2>
+        <p>Form này giúp kiểm tra xem dữ liệu đã được gửi đúng chưa</p>
+
+        <form id="debugForm">
+            <div class="form-group">
+                <label for="brand">Hãng xe</label>
+                <select id="brand" name="brand" required>
+                    <option value="">Chọn hãng xe</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Mazda">Mazda</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Mẫu xe</label>
+                <input type="text" id="model" name="model" placeholder="Ví dụ: Vios" required>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Năm sản xuất</label>
+                <input type="number" id="year" name="year" min="2000" max="2025" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seats">Số chỗ ngồi</label>
+                <select id="seats" name="seats" required>
+                    <option value="">Chọn số chỗ</option>
+                    <option value="4">4 chỗ</option>
+                    <option value="5">5 chỗ</option>
+                    <option value="7">7 chỗ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="transmission">Loại hộp số</label>
+                <select id="transmission" name="transmission" required>
+                    <option value="">Chọn loại hộp số</option>
+                    <option value="Số sàn">Số sàn</option>
+                    <option value="Số tự động">Số tự động</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fuel">Loại nhiên liệu</label>
+                <select id="fuel" name="fuel" required>
+                    <option value="">Chọn loại nhiên liệu</option>
+                    <option value="Xăng">Xăng</option>
+                    <option value="Dầu diesel">Dầu diesel</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="license_plate">Biển số xe</label>
+                <input type="text" id="license_plate" name="license_plate" placeholder="VD: 30A-12345" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price_per_day">Giá cho thuê (VND/ngày)</label>
+                <input type="number" id="price_per_day" name="price_per_day" min="100000" step="10000" value="100000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Địa chỉ đón/trả xe</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+
+            <button type="submit">Kiểm tra dữ liệu</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('debugForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Thu thập dữ liệu từ form
+            const formData = new FormData(this);
+            const dataObject = {};
+            
+            for (let [key, value] of formData.entries()) {
+                dataObject[key] = value;
+            }
+            
+            // Hiển thị dữ liệu
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<h3>Dữ liệu được gửi:</h3>';
+            resultDiv.innerHTML += JSON.stringify(dataObject, null, 2);
+            
+            // Kiểm tra các trường bắt buộc
+            const requiredFields = ['brand', 'model', 'year', 'seats', 'transmission', 'fuel', 'license_plate', 'price_per_day', 'location'];
+            const missingFields = [];
+            
+            for (const field of requiredFields) {
+                if (!dataObject[field] || dataObject[field].trim() === '') {
+                    missingFields.push(field);
+                }
+            }
+            
+            if (missingFields.length > 0) {
+                resultDiv.innerHTML += '<h3>Các trường thiếu:</h3>';
+                resultDiv.innerHTML += `<pre>${JSON.stringify(missingFields, null, 2)}</pre>`;
+            } else {
+                resultDiv.innerHTML += '<h3>✅ Tất cả các trường bắt buộc đã được điền</h3>';
+            }
+        });
+    </script>
+</body>
+</html>

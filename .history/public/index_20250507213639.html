@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dịch vụ thuê xe du lịch chất lượng cao">
+    <title>TKĐK - Dịch vụ thuê xe du lịch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+    
+    <!-- Facebook SDK -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v18.0&appId=YOUR_APP_ID" nonce="RandomNonce"></script>
+</head>
+<body id="body">
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <a href="/public/index.html">
+                    <img src="./image/AutomotiveCar.png" alt="TKĐK Logo" class="logo">
+                </a>
+            </div>
+            <nav class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="/public/index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
+                    <li class="menu-item">
+                        <a href="#"><i class="fas fa-car"></i> Dịch vụ <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="/views/Xe16cho.html">Thuê xe 16 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/views/DanhSachXeChoThue.html"><i class="fas fa-list"></i> Danh sách xe</a></li>
+                    <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div class="login-header guest-only">
+                <a href="/views/login.html" class="btn btn-login">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
+            </div>
+            <div class="user-header auth-required" style="display: none;">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span class="user-name"></span>
+                    <ul class="user-menu">
+                        <li><a href="/views/account.html"><i class="fas fa-user-circle"></i> Tài khoản</a></li>
+                        <li><a href="/views/mycars.html"><i class="fas fa-car"></i> Xe của tôi</a></li>
+                        <li><a href="/views/mywallet.html"><i class="fas fa-wallet"></i> Ví của tôi</a></li>
+                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="banner">
+                <img src="./image/BannerWeb.png" alt="Banner dịch vụ thuê xe" class="banner-img">
+            </div>
+        </section>
+
+        <section class="featured-cars" id="featured">
+            <div class="container">
+                <h2 class="section-title">Xe Nổi Bật</h2>
+                <div class="product-grid">
+                    <!-- Dữ liệu xe nổi bật sẽ được thêm vào đây bởi JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="gioithieu">
+            <div class="container">
+                <h2 class="section-title">Ưu Điểm Của TKĐK</h2>
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up">
+                        <div class="feature-icon">
+                            <img src="https://www.mioto.vn/static/media/thue_xe_co_tai_xe.a6f7dc54.svg" alt="Lái xe an toàn">
+                        </div>
+                        <h3>Lái xe an toàn</h3>
+                        <p>Chuyến đi của bạn được bảo vệ với Gói bảo hiểm thuê xe tự lái từ MIC & VNI</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon">
+                            <img src="https://www.mioto.vn/static/media/dich_vu_thue_xe_tu_lai_hanoi.f177339e.svg" alt="An tâm đặt xe">
+                        </div>
+                        <h3>An tâm đặt xe</h3>
+                        <p>Không tính phí hủy chuyến trong vòng 1h sau khi thanh toán giữ chỗ</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon">
+                            <img src="https://www.mioto.vn/static/media/cho_thue_xe_tu_lai_tphcm.1e7cb1c7.svg" alt="Thủ tục đơn giản">
+                        </div>
+                        <h3>Thủ tục đơn giản</h3>
+                        <p>Chỉ cần có CCCD gắn chip & Giấy phép lái xe là đủ điều kiện thuê xe</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="https://www.mioto.vn/static/media/cho_thue_xe_tu_lai_hanoi.735438af.svg" alt="Thanh toán dễ dàng">
+                        <h3>Thanh toán dễ dàng</h3>
+                        <p>Đa dạng hình thức thanh toán</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="https://www.mioto.vn/static/media/thue_xe_tu_lai_gia_re_hcm.ffd1319e.svg" alt="Giao xe tận nơi">
+                        <h3>Giao xe tận nơi</h3>
+                        <p>Bạn có thể lựa chọn giao xe tận nhà/sân bay</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="https://www.mioto.vn/static/media/thue_xe_tu_lai_gia_re_hanoi.4035317e.svg" alt="Dòng xe đa dạng">
+                        <h3>Dòng xe đa dạng</h3>
+                        <p>Hơn 100 dòng xe cho bạn tùy ý lựa chọn: Mini, Sedan, CUV, SUV, MPV</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="insurance">
+            <div class="container">
+                <h2 class="section-title">Hành Trình Của Bạn Luôn Được Bảo Vệ</h2>
+                <div class="insurance-partners" data-aos="fade-up">
+                    <img src="https://www.mioto.vn/static/media/global-care.e4fc7ef6.jpg" alt="Global Care">
+                    <img src="https://www.mioto.vn/static/media/mic.ad48f066.jpg" alt="MIC">
+                    <img src="https://www.mioto.vn/static/media/vni.d1b15e7a.jpg" alt="VNI">
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">Hướng Dẫn Thuê Xe</h2>
+                <p class="section-subtitle">4 bước đơn giản để thuê xe</p>
+                <div class="steps-grid">
+                    <div class="box2">
+                        <img src="https://www.mioto.vn/static/media/cho_thue_xe_co_taigia_re_tphcm.12455eba.svg" alt="">
+                        <p class="so">01</p>
+                        <p style="width: 300px;"> Thực hiện đăt xe theo các bước trên web</p>
+                    </div>
+                    <div class="box2">
+                        <img src="https://www.mioto.vn/static/media/gia_thue_xe_7cho_tai_tphcm.9455973a.svg" alt="">
+                        <p class="so">02</p>
+                        <p> Nhận xe tại điểm giao</p>
+                    </div>
+                    <div class="box2">
+                        <img src="https://www.mioto.vn/static/media/gia_thue_xe_7cho_tai_hanoi.0834bed8.svg" alt="">
+                        <p class="so">03</p>
+                        <p> Bắt đầu cuộc hành trình </p>    
+                    </div>
+                    <div class="box2">
+                        <img src="https://www.mioto.vn/static/media/gia_thue_xe_4cho_tai_tphcm.9dcd3930.svg" alt="">
+                        <p class="so">04</p>
+                        <p> Trả xe & thanh toán tiền</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact Float Buttons -->
+    <div class="contact-float">
+        <a href="https://www.facebook.com/47NDK/" class="contact-item facebook" data-tooltip="Theo dõi chúng tôi trên Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.facebook.com/messages/t/100009036720265" class="contact-item messenger" data-tooltip="Nhắn tin với chúng tôi">
+            <i class="fab fa-facebook-messenger"></i>
+        </a>
+        <a href="https://zalo.me/0397468827" class="contact-item zalo" data-tooltip="Chat Zalo với chúng tôi">
+            <i class="fas fa-comment"></i>
+        </a>
+        <a href="tel:0397468827" class="contact-item phone" data-tooltip="Gọi ngay: 0397468827">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form action="/auth/login" method="POST">
+                <input type="text" id="username" name="username" placeholder="Số điện thoại" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn" style="margin-bottom: 10px;">Đăng nhập</button> <br>
+                <a href="#d" style="font-weight: normal; color: rgb(0, 0, 0); font-size: 15px; border-bottom: 1px black solid ;">Quên mật khẩu?</a>
+                <p>Bạn chưa là thành viên? <a href="#" style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng ký ngay</a></p>
+                <div class="social-login">
+                    <button class="social-btn facebook">Facebook</button>
+                    <button class="social-btn google">Google</button>
+                    <div class="fb-login-button" 
+                         data-width="" 
+                         data-size="large" 
+                         data-button-type="login_with" 
+                         data-layout="rounded" 
+                         data-auto-logout-link="false" 
+                         data-use-continue-as="false"
+                         data-scope="public_profile,email"
+                         data-onlogin="checkLoginState();">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="registerModal">
+        <div class="form-register">
+            <span class="close">&times;</span>
+            <h2>Đăng ký</h2>
+            <form>
+                <div class="name">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="phone">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+                <div class="password">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="Repass">
+                    <label for="Repass">Nhập lại mật khẩu:</label>
+                    <input type="password" id="Repass" name="Repass" required>
+                </div>
+                <div class="ref">
+                    <label for="ref">Người giới thiệu:</label>
+                    <input type="text" id="ref" name="ref">
+                </div>
+                <button type="button" class="btn-register">Đăng ký</button>
+            </form>
+            <p style="margin-top: 10px;">Bạn đã có tài khoản? <a href="#" style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng nhập ngay</a></p>
+            <div class="social-login">
+                <button class="social-btn facebook">Facebook</button>
+                <button class="social-btn google">Google</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Về TKĐK</h3>
+                    <p>TKĐK là nền tảng chia sẻ xe hàng đầu, kết nối khách hàng với đội xe chất lượng cao và đáng tin cậy.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/47NDK/" class="social-icon" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/47ndk/" class="social-icon" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Dịch vụ</h3>
+                    <ul class="footer-links">
+                        <li><a href="/views/Xe4cho.html"><i class="fas fa-car"></i> Thuê xe 4 chỗ</a></li>
+                        <li><a href="/views/Xe7cho.html"><i class="fas fa-car-side"></i> Thuê xe 7 chỗ</a></li>
+                        <li><a href="#"><i class="fas fa-shuttle-van"></i> Thuê xe 16 chỗ</a></li>
+                        <li><a href="#"><i class="fas fa-bus"></i> Thuê xe 29 chỗ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Chính sách</h3>
+                    <ul class="footer-links">
+                        <li><a href="/views/Chinhsachbaomat.html">Chính sách bảo mật</a></li>
+                        <li><a href="/views/QuyCheHoatDong.html">Quy chế hoạt động</a></li>
+                        <li><a href="/views/GiaiQuyetKhieuNai.html">Giải quyết khiếu nại</a></li>
+                        <li><a href="/views/DieuKhoanDichVu.html">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Liên hệ</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item-footer">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>HuTech</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-phone"></i>
+                            <span>0397468827</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-envelope"></i>
+                            <span>dinhkhanhvn.2004@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                   
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <a href="/views/AdminLogin.html" class="admin-login">
+                    <p style="align-items: center; size: 16px; text-decoration: none;">&copy; 2025 TKĐK. Tất cả quyền được bảo lưu.</p>
+                </a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+    </script>
+    <script src="./js/featured-cars.js"></script>
+    <script src="./js/code.js"></script>
+</body>
+</html>

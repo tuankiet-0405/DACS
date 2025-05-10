@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - TKĐK Admin</title>
+  <link rel="stylesheet" href="/public/css/stylesAdmin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/public/js/code.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+  <style>
+    /* CSS cho khu vực thông báo */
+    .notifications-area {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin: 1rem 2rem;
+      overflow: hidden;
+    }
+    
+    .notifications-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .notifications-header h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .notification-count {
+      background-color: #ef4444;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      min-width: 1.5rem;
+      text-align: center;
+    }
+    
+    .notifications-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 0.5rem 0;
+    }
+    
+    .notification-item {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+    
+    .notification-item:hover {
+      background-color: #f9fafb;
+    }
+    
+    .notification-item.unread {
+      background-color: #f0f9ff;
+    }
+    
+    .notification-item.unread:hover {
+      background-color: #e0f2fe;
+    }
+    
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #4f46e5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+    
+    .notification-icon.car-approval {
+      background-color: #f59e0b;
+    }
+    
+    .notification-icon.system {
+      background-color: #4f46e5;
+    }
+    
+    .notification-icon.report {
+      background-color: #ef4444;
+    }
+    
+    .notification-content {
+      flex-grow: 1;
+    }
+    
+    .notification-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+    
+    .notification-message {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .notification-time {
+      color: #9ca3af;
+      font-size: 0.75rem;
+    }
+    
+    .notification-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .notification-action-btn {
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    
+    .btn-approve {
+      background-color: #10b981;
+      color: white;
+    }
+    
+    .btn-approve:hover {
+      background-color: #059669;
+    }
+    
+    .btn-reject {
+      background-color: #f43f5e;
+      color: white;
+    }
+    
+    .btn-reject:hover {
+      background-color: #e11d48;
+    }
+    
+    .btn-view {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+    
+    .btn-view:hover {
+      background-color: #e5e7eb;
+    }
+    
+    .loading-spinner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #6b7280;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .no-notifications {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #6b7280;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .no-notifications i {
+      font-size: 2rem;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+    }
+
+    /* CSS cho các loại thông báo */
+    .notification-icon.car-registration {
+      background-color: #3b82f6;
+    }
+    
+    .notification-icon.car-approval {
+      background-color: #10b981;
+    }
+    
+    .notification-icon.system {
+      background-color: #6366f1;
+    }
+    
+    .notification-icon.report {
+      background-color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-header">
+        <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin" />
+      </div>
+      <ul class="menu">
+        <li><a href="AdminTrangChu.html" class="active"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
+        <li><a href="AdminQuanLyKH.html"><i class="fas fa-users"></i> Quản Lý Khách Hàng</a></li>
+        <li><a href="AdminQLXe.html"><i class="fas fa-car"></i> Quản Lý Xe</a></li>
+        <li><a href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a></li>
+        <li><a href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a></li>
+        <li><a href="AdminVoucher.html"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a></li>
+        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <div class="card">
+      <h3>Doanh Thu Tháng</h3>
+      <p>68.6M <i class="fas fa-coins"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+12% so với tháng trước</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Số Lượt Thuê</h3>
+      <p>24 <i class="fas fa-car-side"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+8 lượt so với tháng trước</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Khách Hàng Mới</h3>
+      <p>12 <i class="fas fa-users"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+5 khách hàng tuần này</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Tỷ Lệ Hoàn Thành</h3>
+      <p>95% <i class="fas fa-check-circle"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+2% so với tháng trước</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Thêm phần thông báo -->
+  <div class="notifications-area" id="notificationsArea">
+    <div class="notifications-header">
+      <h4><i class="fas fa-bell"></i> Thông báo mới</h4>
+      <span id="notificationCount" class="notification-count">0</span>
+    </div>
+    <div class="notifications-list" id="notificationsList">
+      <!-- Danh sách thông báo sẽ được thêm vào đây bằng JavaScript -->
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Đang tải thông báo...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-area">
+    <div>
+      <div class="table-header">
+        <h4>Danh Sách Cho Thuê Xe Hôm Nay</h4>
+        <div class="table-actions">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm kiếm...">
+          </div>
+          <button class="btn-export">
+            <i class="fas fa-download"></i>
+            Xuất Excel
+          </button>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Xe</th>
+            <th>Khách hàng</th>
+            <th>Thời gian</th>
+            <th>Thành tiền</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>
+              <div class="car-info">
+                <img src="https://i.imgur.com/qbT8JmH.jpg" alt="Mercedes" class="car-img">
+                <span>Mercedes C200</span>
+              </div>
+            </td>
+            <td>
+              <div class="customer-info">
+                <img src="https://ui-avatars.com/api/?name=Minh+Nhự&background=4f46e5&color=fff" alt="Avatar" class="avatar">
+                <div>
+                  <p class="customer-name">Minh Nhự</p>
+                  <small class="customer-id">KH001</small>
+                </div>
+              </div>
+            </td>
+            <td>08:00 - 17:00</td>
+            <td class="price">6,200,000đ</td>
+            <td><span class="status-badge completed">Đã hoàn thành</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <div class="car-info">
+                <img src="https://i.imgur.com/3lGGgzr.jpg" alt="Audi" class="car-img">
+                <span>Audi A5</span>
+              </div>
+            </td>
+            <td>
+              <div class="customer-info">
+                <img src="https://ui-avatars.com/api/?name=Văn+An&background=4f46e5&color=fff" alt="Avatar" class="avatar">
+                <div>
+                  <p class="customer-name">Văn An</p>
+                  <small class="customer-id">KH002</small>
+                </div>
+              </div>
+            </td>
+            <td>09:30 - 16:30</td>
+            <td class="price">5,800,000đ</td>
+            <td><span class="status-badge pending">Đang thuê</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="table-right">
+      <div class="table-header">
+        <h4>Thống Kê Doanh Thu</h4>
+        <select class="time-filter" id="revenueTimeFilter">
+          <option value="week">Tuần này</option>
+          <option value="month" selected>Tháng này</option>
+          <option value="year">Năm nay</option>
+        </select>
+      </div>
+      <div class="chart-container" style="position: relative; height: 300px; margin-bottom: 2rem;">
+        <canvas id="revenueChart"></canvas>
+      </div>
+
+      <div class="table-header">
+        <h4>Top Xe Cho Thuê Nhiều Nhất</h4>
+        <select class="time-filter">
+          <option value="week">Tuần này</option>
+          <option value="month" selected>Tháng này</option>
+          <option value="year">Năm nay</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên xe</th>
+            <th>Số lần</th>
+            <th>Tỷ lệ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="rank rank-1">1</div></td>
+            <td>Mercedes C200</td>
+            <td>8 lần</td>
+            <td>42.8%</td>
+          </tr>
+          <tr>
+            <td><div class="rank rank-2">2</div></td>
+            <td>Audi A5</td>
+            <td>6 lần</td>
+            <td>28.6%</td>
+          </tr>
+          <tr>
+            <td><div class="rank rank-3">3</div></td>
+            <td>BMW 530i</td>
+            <td>4 lần</td>
+            <td>14.3%</td>
+          </tr>
+          <tr>
+            <td><div class="rank">4</div></td>
+            <td>Vinfast VF8</td>
+            <td>2 lần</td>
+            <td>14.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(revenueCtx, {
+      type: 'line',
+      data: {
+        labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+        datasets: [{
+          label: 'Doanh thu (triệu đồng)',
+          data: [12, 19, 15, 17, 22, 25, 18],
+          fill: true,
+          borderColor: '#4f46e5',
+          backgroundColor: 'rgba(79, 70, 229, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Handle active menu item
+    document.querySelectorAll('.menu a').forEach(link => {
+      if (link.getAttribute('href') === location.pathname.split('/').pop()) {
+        link.classList.add('active');
+      }
+    });
+
+    // Handle logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Bạn có chắc muốn đăng xuất?')) {
+        // Xóa token và đăng xuất
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = 'AdminLogin.html';
+      }
+    });
+
+    // Handle table search
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
+    });
+
+    // Handle time filter changes
+    document.querySelectorAll('.time-filter').forEach(filter => {
+      filter.addEventListener('change', (e) => {
+        const timeFrame = e.target.value;
+        // Update relevant data based on selected time frame
+      });
+    });
+
+    // Export functionality
+    document.querySelector('.btn-export').addEventListener('click', () => {
+      alert('Đang xuất dữ liệu...');
+      // Implement export logic
+    });
+
+    // Format timestamp to readable date
+    function formatTimeAgo(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+      
+      if (diffInSeconds < 60) {
+        return `${diffInSeconds} giây trước`;
+      }
+      
+      const diffInMinutes = Math.floor(diffInSeconds / 60);
+      if (diffInMinutes < 60) {
+        return `${diffInMinutes} phút trước`;
+      }
+      
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      if (diffInHours < 24) {
+        return `${diffInHours} giờ trước`;
+      }
+      
+      const diffInDays = Math.floor(diffInHours / 24);
+      if (diffInDays < 7) {
+        return `${diffInDays} ngày trước`;
+      }
+      
+      // Format date to DD/MM/YYYY
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    // Fetch admin notifications
+    async function fetchAdminNotifications() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'AdminLogin.html';
+        return;
+      }
+      
+      try {
+        console.log('Đang tải thông báo admin...');
+        
+        // Bổ sung tùy chọn log để debug
+        const axiosConfig = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+        
+        console.log('Config API call:', axiosConfig);
+        
+        const response = await axios.get('/api/notifications/admin', axiosConfig);
+        
+        console.log('Kết quả API thông báo:', response.data);
+        
+        const notificationsList = document.getElementById('notificationsList');
+        const notificationCount = document.getElementById('notificationCount');
+        
+        // Clear loading spinner
+        notificationsList.innerHTML = '';
+        
+        if (response.data.success) {
+          const notifications = response.data.data;
+          
+          // Count unread notifications
+          const unreadCount = notifications.filter(n => !n.da_doc).length;
+          notificationCount.textContent = unreadCount;
+          
+          if (notifications.length === 0) {
+            notificationsList.innerHTML = `
+              <div class="no-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <p>Không có thông báo nào</p>
+              </div>
+            `;
+            return;
+          }
+          
+          // Display notifications
+          notifications.forEach(notification => {
+            const notificationItem = document.createElement('div');
+            notificationItem.className = `notification-item ${!notification.da_doc ? 'unread' : ''}`;
+            
+            // Xác định icon dựa vào loại thông báo
+            let iconClass = 'fas fa-bell';
+            let iconType = '';
+            
+            if (notification.loai_thong_bao === 'car_approval' || notification.loai_thong_bao === 'car_registration') {
+              iconClass = 'fas fa-car-side';
+              iconType = notification.loai_thong_bao === 'car_registration' ? 'car-registration' : 'car-approval';
+            } else if (notification.loai_thong_bao === 'system') {
+              iconClass = 'fas fa-server';
+              iconType = 'system';
+            } else if (notification.loai_thong_bao === 'report') {
+              iconClass = 'fas fa-flag';
+              iconType = 'report';
+            }
+              // Lấy car_id từ lien_ket - Cải tiến hỗ trợ nhiều định dạng liên kết
+            let carId = '';
+            if (notification.lien_ket) {
+              // Hỗ trợ nhiều định dạng liên kết
+              if (notification.lien_ket.includes('/car/')) {
+                carId = notification.lien_ket.split('/car/')[1];
+              } else if (notification.lien_ket.includes('/cars/view/')) {
+                carId = notification.lien_ket.split('/cars/view/')[1];
+              } else if (notification.lien_ket.includes('/admin/cars/view/')) {
+                carId = notification.lien_ket.split('/admin/cars/view/')[1];
+              } else if (notification.lien_ket.includes('/cars/')) {
+                carId = notification.lien_ket.split('/cars/')[1];
+              }
+              
+              // Loại bỏ các tham số truy vấn nếu có
+              if (carId && carId.includes('?')) {
+                carId = carId.split('?')[0];
+              }
+            }
+            
+            notificationItem.innerHTML = `
+              <div class="notification-icon ${iconType}">
+                <i class="${iconClass}"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">${notification.tieu_de}</div>
+                <div class="notification-message">${notification.noi_dung}</div>
+                <div class="notification-time">${formatTimeAgo(notification.ngay_tao)}</div>
+                ${(notification.loai_thong_bao === 'car_approval' || notification.loai_thong_bao === 'car_registration') ? `
+                  <div class="notification-actions">
+                    <button class="notification-action-btn btn-approve" data-car-id="${carId}" data-notification-id="${notification.id}">Duyệt xe</button>
+                    <button class="notification-action-btn btn-reject" data-car-id="${carId}" data-notification-id="${notification.id}">Từ chối</button>
+                    <button class="notification-action-btn btn-view" data-car-id="${carId}" data-notification-id="${notification.id}">Xem chi tiết</button>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+            
+            notificationsList.appendChild(notificationItem);
+            
+            // Mark notification as read when clicked
+            notificationItem.addEventListener('click', async (e) => {
+              if (e.target.classList.contains('notification-action-btn')) {
+                return; // Xử lý riêng cho các nút
+              }
+              
+              if (!notification.da_doc) {
+                try {
+                  await axios.put(`/api/notifications/${notification.id}/read`, {}, {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  });
+                  
+                  // Update UI
+                  notificationItem.classList.remove('unread');
+                  const unreadCount = parseInt(notificationCount.textContent) - 1;
+                  notificationCount.textContent = unreadCount < 0 ? 0 : unreadCount;
+                } catch (error) {
+                  console.error('Lỗi khi đánh dấu đã đọc:', error);
+                }
+              }
+            });
+          });
+          
+          // Add click handlers for car approval buttons
+          document.querySelectorAll('.btn-approve').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+              e.stopPropagation();
+              const carId = btn.dataset.carId;
+              const notificationId = btn.dataset.notificationId;
+              
+              Swal.fire({
+                title: 'Xác nhận duyệt xe',
+                text: 'Xe sẽ được hiển thị trong danh sách xe cho thuê sau khi duyệt. Bạn có chắc chắn?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Duyệt xe',
+                cancelButtonText: 'Hủy',
+                confirmButtonColor: '#10b981'
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  try {
+                    // Gọi API duyệt xe
+                    await axios.put(`/api/cars/${carId}/approve`, {}, {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                    
+                    // Đánh dấu thông báo đã đọc
+                    await axios.put(`/api/notifications/${notificationId}/read`, {}, {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                    
+                    Swal.fire({
+                      title: 'Duyệt thành công!',
+                      text: 'Xe đã được duyệt và đưa vào danh sách xe cho thuê.',
+                      icon: 'success',
+                      confirmButtonColor: '#10b981'
+                    });
+                    
+                    // Reload notifications
+                    fetchAdminNotifications();
+                  } catch (error) {
+                    console.error('Lỗi khi duyệt xe:', error);
+                    Swal.fire({
+                      title: 'Lỗi!',
+                      text: error.response?.data?.message || 'Đã xảy ra lỗi khi duyệt xe.',
+                      icon: 'error'
+                    });
+                  }
+                }
+              });
+            });
+          });
+          
+          // Add click handlers for car rejection buttons
+          document.querySelectorAll('.btn-reject').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+              e.stopPropagation();
+              const carId = btn.dataset.carId;
+              const notificationId = btn.dataset.notificationId;
+              
+              Swal.fire({
+                title: 'Xác nhận từ chối',
+                text: 'Vui lòng cung cấp lý do từ chối để người dùng có thể hiểu và sửa lại.',
+                input: 'textarea',
+                inputPlaceholder: 'Nhập lý do từ chối...',
+                inputAttributes: {
+                  'aria-label': 'Nhập lý do từ chối'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Từ chối',
+                cancelButtonText: 'Hủy',
+                confirmButtonColor: '#f43f5e'
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  const rejectReason = result.value || 'Xe không đáp ứng tiêu chuẩn cho thuê';
+                  
+                  try {
+                    // Gọi API từ chối xe
+                    await axios.put(`/api/cars/${carId}/reject`, {
+                      reason: rejectReason
+                    }, {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                    
+                    // Đánh dấu thông báo đã đọc
+                    await axios.put(`/api/notifications/${notificationId}/read`, {}, {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                    
+                    Swal.fire({
+                      title: 'Đã từ chối!',
+                      text: 'Bạn đã từ chối yêu cầu đăng ký xe này.',
+                      icon: 'success',
+                      confirmButtonColor: '#10b981'
+                    });
+                    
+                    // Reload notifications
+                    fetchAdminNotifications();
+                  } catch (error) {
+                    console.error('Lỗi khi từ chối xe:', error);
+                    Swal.fire({
+                      title: 'Lỗi!',
+                      text: error.response?.data?.message || 'Đã xảy ra lỗi khi từ chối xe.',
+                      icon: 'error'
+                    });
+                  }
+                }
+              });
+            });
+          });
+          
+          // Add click handlers for view detail buttons
+          document.querySelectorAll('.btn-view').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const carId = btn.dataset.carId;
+              
+              // Redirect to car details page
+              window.location.href = `AdminQLXe.html?action=view&id=${carId}`;
+            });
+          });
+        } else {
+          throw new Error(response.data.message || 'Không thể tải thông báo');
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải thông báo:', error);
+        const notificationsList = document.getElementById('notificationsList');
+        notificationsList.innerHTML = `
+          <div class="no-notifications">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Đã xảy ra lỗi khi tải thông báo: ${error.message}</p>
+            <p>Kiểm tra console để biết thêm chi tiết</p>
+            <button class="notification-action-btn btn-view" onclick="fetchAdminNotifications()">Thử lại</button>
+          </div>
+        `;
+      }
+    }
+
+    // Load notifications when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchAdminNotifications();
+      
+      // Auto refresh notifications every 2 minutes
+      setInterval(fetchAdminNotifications, 2 * 60 * 1000);
+    });
+  </script>
+</body>
+</html>

@@ -90,38 +90,6 @@ const authMiddleware = {
                 message: 'Bạn không có quyền truy cập chức năng này'
             });
         }
-    },
-
-    // Kiểm tra quyền chỉnh sửa thông tin người dùng
-    canEditUserInfo: async (req, res, next) => {
-        try {
-            const currentUserId = req.user.id;
-            const targetUserId = req.params.id;
-            const isAdmin = req.user.loai_tai_khoan === 'admin' || req.user.loaiTaiKhoan === 'admin';
-            
-            // Admin luôn có quyền chỉnh sửa
-            if (isAdmin) {
-                return next();
-            }
-            
-            // Người dùng chỉ có thể sửa thông tin của chính mình
-            if (currentUserId.toString() === targetUserId.toString()) {
-                return next();
-            }
-            
-            // Không có quyền sửa
-            return res.status(403).json({
-                success: false,
-                message: 'Bạn không có quyền chỉnh sửa thông tin của người dùng này'
-            });
-        } catch (error) {
-            console.error('Lỗi khi kiểm tra quyền:', error);
-            return res.status(500).json({
-                success: false, 
-                message: 'Đã xảy ra lỗi khi kiểm tra quyền',
-                error: error.message
-            });
-        }
     }
 };
 
