@@ -4,57 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Car Rental System</title>
-    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container {
+            width: 400px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            text-align: center;
+            padding: 25px 0;
+            margin-bottom: 10px;
+        }
+        
+        .login-logo-container {
+            width: 120px;
+            height: 120px;
+            background-color: #ff0033;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            padding: 15px;
+        }
+        
+        .login-logo {
+            max-width: 100%;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .login-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .login-form {
+            padding: 0 30px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: #2196F3;
+            outline: none;
+        }
+        
+        .password-input {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            background: none;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .remember-me {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 8px;
+        }
+        
+        .forgot-password {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-login:hover {
+            background: #1976D2;
+        }
+        
+        .btn-login i {
+            margin-right: 8px;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #f44336;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .back-to-site {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .back-to-site a {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .back-to-site a i {
+            margin-right: 5px;
+        }
+        
+        .back-to-site a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="login-page">
+<body>
     <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <img src="/public/image/TK-DK.PNG" alt="Logo" class="login-logo">
-                <h1>Admin Dashboard</h1>
+        <div class="login-header">
+            <div class="login-logo-container">
+                <img src="/public/image/AutomotiveCar.png" alt="Logo" class="login-logo">
+            </div>
+            <h1>Admin</h1>
+            <p class="login-subtitle">Đăng nhập để quản lý hệ thống</p>
+        </div>
+
+        <form class="login-form" id="adminLoginForm">
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="email" placeholder="admin@gmail.com" required>
             </div>
 
-            <form class="login-form" id="adminLoginForm">
-                <div class="error-message" id="errorMessage"></div>
-                
-                <div class="form-group">
-                    <label for="username">
-                        <i class="fas fa-user"></i>
-                        Tên đăng nhập
-                    </label>
-                    <input type="text" id="username" name="username" required>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <div class="password-input">
+                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                    <i class="fas fa-eye toggle-password" id="togglePassword"></i>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="password">
-                        <i class="fas fa-lock"></i>
-                        Mật khẩu
-                    </label>
-                    <div class="password-input">
-                        <input type="password" id="password" name="password" required>
-                        <i class="fas fa-eye toggle-password" id="togglePassword"></i>
-                    </div>
-                </div>
+            <div class="remember-me">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="remember" name="remember">
+                    Ghi nhớ đăng nhập
+                </label>
+                <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            </div>
 
-                <div class="remember-me">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="remember" name="remember">
-                        Ghi nhớ đăng nhập
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                </div>
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i>
+                Đăng nhập
+            </button>
+        </form>
 
-                <button type="submit" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Đăng nhập
-                </button>
-            </form>
-
-            <footer>
-                <!-- Include the footer dynamically -->
-                <div id="footer-placeholder"></div>
-            </footer>
+        <div class="back-to-site">
+            <a href="/public/index.html"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
         </div>
     </div>
 
@@ -64,6 +241,18 @@
             const errorMessage = document.getElementById('errorMessage');
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
+            
+            // Hiệu ứng khi focus vào input
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.closest('.form-group').classList.add('focus-within');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.closest('.form-group').classList.remove('focus-within');
+                });
+            });
 
             // Toggle password visibility
             togglePassword.addEventListener('click', function() {
@@ -77,39 +266,83 @@
             loginForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const username = document.getElementById('username').value;
+                // Hiển thị đang xử lý
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+                submitBtn.disabled = true;
+                
+                const email = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
                 const remember = document.getElementById('remember').checked;
 
                 try {
-                    const response = await fetch('/admin/login', {
+                    const response = await fetch('/api/auth/login', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ username, password, remember })
+                        body: JSON.stringify({ 
+                            email: email, 
+                            mat_khau: password, 
+                            remember: remember 
+                        })
                     });
 
                     const data = await response.json();
 
                     if (response.ok) {
-                        window.location.href = '/admin/dashboard';
+                        // Kiểm tra xem người dùng có phải là admin không
+                        if (data.user && data.user.loai_tai_khoan === 'admin') {
+                            // Lưu token từ response
+                            if (data.token) {
+                                localStorage.setItem('adminToken', data.token);
+                                localStorage.setItem('adminUser', JSON.stringify(data.user || {}));
+                                
+                                // Lưu email nếu ghi nhớ đăng nhập
+                                if (remember) {
+                                    localStorage.setItem('adminUsername', email);
+                                } else {
+                                    localStorage.removeItem('adminUsername');
+                                }
+                            }
+                            
+                            errorMessage.style.display = 'none';
+                            
+                            // Hiển thị thông báo thành công trước khi chuyển trang
+                            submitBtn.innerHTML = '<i class="fas fa-check"></i> Đăng nhập thành công!';
+                            submitBtn.style.backgroundColor = '#27ae60';
+                            
+                            setTimeout(() => {
+                                window.location.href = '/views/AdminTrangChu.html';
+                            }, 1000);
+                        } else {
+                            // Không phải admin
+                            errorMessage.style.display = 'block';
+                            errorMessage.textContent = 'Tài khoản của bạn không có quyền truy cập trang quản trị.';
+                            submitBtn.innerHTML = originalBtnText;
+                            submitBtn.disabled = false;
+                        }
                     } else {
                         errorMessage.style.display = 'block';
-                        errorMessage.textContent = data.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+                        errorMessage.textContent = data.message || 'Email hoặc mật khẩu không chính xác.';
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
                     }
                 } catch (error) {
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
                 }
             });
-
-            // Dynamically load the footer
-            fetch('/views/partials/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('footer-placeholder').innerHTML = data;
-                });
+            
+            // Kiểm tra và điền thông tin nếu có lưu
+            const rememberedUsername = localStorage.getItem('adminUsername');
+            if (rememberedUsername) {
+                document.getElementById('username').value = rememberedUsername;
+                document.getElementById('remember').checked = true;
+            }
         });
     </script>
 </body>

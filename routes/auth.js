@@ -23,24 +23,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Cấu hình storage cho giấy phép lái xe
-const licenseStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname, '../public/uploads/licenses');
-        // Tạo thư mục nếu chưa tồn tại
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        const fieldname = file.fieldname === 'anh_mat_truoc' ? 'front' : 'back';
-        cb(null, `license-${fieldname}-${uniqueSuffix}${ext}`);
-    }
-});
-
 // Kiểm tra file upload
 const fileFilter = (req, file, cb) => {
     // Chỉ chấp nhận các file ảnh
@@ -51,16 +33,9 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Khởi tạo middleware upload cho avatar
+// Khởi tạo middleware upload
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Giới hạn 5MB
-    fileFilter: fileFilter
-});
-
-// Khởi tạo middleware upload cho giấy phép lái xe
-const uploadLicense = multer({ 
-    storage: licenseStorage,
     limits: { fileSize: 5 * 1024 * 1024 }, // Giới hạn 5MB
     fileFilter: fileFilter
 });
@@ -77,10 +52,6 @@ router.get('/me', authMiddleware.verifyToken, authController.getCurrentUser);
 router.put('/profile', authMiddleware.verifyToken, authController.updateProfile);
 router.post('/avatar', authMiddleware.verifyToken, upload.single('avatar'), authController.uploadAvatar);
 router.get('/driver-license', authMiddleware.verifyToken, authController.getDriverLicense);
-router.post('/driver-license', authMiddleware.verifyToken, uploadLicense.fields([
-    { name: 'anh_mat_truoc', maxCount: 1 },
-    { name: 'anh_mat_sau', maxCount: 1 }
-]), authController.updateDriverLicense);
 router.get('/stats', authMiddleware.verifyToken, authController.getUserStats);
 
 module.exports = router;

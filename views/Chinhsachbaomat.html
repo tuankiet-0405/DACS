@@ -208,9 +208,7 @@
             <div class="privacy-section">
                 <h2><i class="fas fa-user-shield"></i> Cam kết bảo mật</h2>
                 <p>Công ty TKDK cam kết bảo mật tuyệt đối thông tin khách hàng theo chính sách bảo mật của chúng tôi.</p>
-            </div>
-
-            <div class="privacy-section">
+            </div>            <div class="privacy-section">
                 <h2><i class="fas fa-info-circle"></i> Mục đích và phạm vi thu thập thông tin</h2>
                 <p>Thông tin cá nhân mà Công ty thu thập bao gồm:</p>
                 <ul class="privacy-list">
@@ -230,6 +228,35 @@
                 </ul>
             </div>
 
+            <div class="password-change-section">
+                <h2><i class="fas fa-lock"></i> Thay đổi mật khẩu</h2>
+                <form id="passwordChangeForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Mật khẩu hiện tại</label>
+                        <div class="password-input">
+                            <input type="password" id="currentPassword" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <div class="password-input">
+                            <input type="password" id="newPassword" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-change-password">
+                        <i class="fas fa-key"></i> Đổi mật khẩu
+                    </button>
+                </form>
+            </div>
            
         </div>
     </div>
@@ -298,9 +325,7 @@
                 </a>
             </div>
         </div>
-    </footer>
-
-    <script>
+    </footer>    <script>
         // Toggle password visibility
         document.querySelectorAll('.toggle-password').forEach(icon => {
             icon.addEventListener('click', function() {
@@ -313,10 +338,73 @@
         });
 
         // Handle password change form
-        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
+        document.getElementById('passwordChangeForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Add your password change logic here
-            alert('Chức năng đổi mật khẩu sẽ được cập nhật sớm!');
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate passwords
+            if (newPassword !== confirmPassword) {
+                alert('Mật khẩu mới không khớp!');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('Mật khẩu mới phải có ít nhất 6 ký tự!');
+                return;
+            }
+            
+            // Get user ID from local storage
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData || !userData.id) {
+                alert('Bạn cần đăng nhập lại để thực hiện thao tác này!');
+                window.location.href = '/views/login.html';
+                return;
+            }
+            
+            const userId = userData.id;
+            
+            try {
+                const submitButton = document.querySelector('.btn-change-password');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+                submitButton.disabled = true;
+                
+                // Call the API to change password
+                const response = await fetch(`/api/users/${userId}/password`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        mat_khau_cu: currentPassword,
+                        mat_khau: newPassword,
+                        xac_nhan_mat_khau: confirmPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Đổi mật khẩu thành công!');
+                    document.getElementById('passwordChangeForm').reset();
+                } else {
+                    alert(data.message || 'Đổi mật khẩu thất bại!');
+                }
+                
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            } catch (error) {
+                console.error('Lỗi khi đổi mật khẩu:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại sau!');
+                
+                const submitButton = document.querySelector('.btn-change-password');
+                submitButton.innerHTML = '<i class="fas fa-key"></i> Đổi mật khẩu';
+                submitButton.disabled = false;
+            }
         });
     </script>
 </body>

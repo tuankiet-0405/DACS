@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const carController = require('../controllers/CarController');
+// Sửa đường dẫn import cho đúng
+const carController = require('../controllers/CarController.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 // Get all cars
@@ -20,11 +21,5 @@ router.put('/:id', authMiddleware.verifyToken, carController.updateCar);
 
 // Delete a car (requires authentication)
 router.delete('/:id', authMiddleware.verifyToken, carController.deleteCar);
-
-// Duyệt xe (yêu cầu quyền admin)
-router.put('/:id/approve', authMiddleware.verifyToken, carController.approveCar);
-
-// Từ chối xe (yêu cầu quyền admin)
-router.put('/:id/reject', authMiddleware.verifyToken, carController.rejectCar);
 
 module.exports = router;

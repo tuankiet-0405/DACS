@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý giao dịch - TKĐK Admin</title>
-    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
+    <title>Quản lý giao dịch - TKĐK Admin</title>    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
+    <link rel="stylesheet" href="/public/css/notification.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/public/js/adminAuth.js"></script>
+    <script src="/public/js/adminTransactions.js" defer></script>
 </head>
 <body>
     <div class="header">
@@ -39,43 +41,40 @@
                     Xuất báo cáo
                 </button>
             </div>
-        </div>
-
-        <div class="transaction-stats">
+        </div>        <div class="transaction-stats">
             <div class="stat-card">
                 <i class="fas fa-money-bill-wave"></i>
                 <div class="stat-info">
                     <h4>Tổng doanh thu</h4>
-                    <p>920,200,000đ</p>
+                    <p>0đ</p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-file-invoice"></i>
                 <div class="stat-info">
                     <h4>Giao dịch tháng này</h4>
-                    <p>24</p>
+                    <p>0</p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-chart-line"></i>
                 <div class="stat-info">
                     <h4>Tăng trưởng</h4>
-                    <p>+15.2%</p>
+                    <p>0%</p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-wallet"></i>
                 <div class="stat-info">
                     <h4>Doanh thu tháng</h4>
-                    <p>124,000,000đ</p>
+                    <p>0đ</p>
                 </div>
             </div>
-        </div>
-
-        <div class="filters">
+        </div>        <div class="filters">
             <button class="filter-item active" data-status="all">Tất cả</button>
             <button class="filter-item" data-status="completed">Đã hoàn thành</button>
-            <button class="filter-item" data-status="pending">Đang xử lý</button>
+            <button class="filter-item" data-status="pending">Đang thuê</button>
+            <button class="filter-item" data-status="processing">Đã duyệt</button>
             <button class="filter-item" data-status="cancelled">Đã hủy</button>
         </div>
 
@@ -92,36 +91,11 @@
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
-                </thead>
-                <tbody>
+                </thead>                <tbody>
+                    <!-- Dữ liệu giao dịch sẽ được thêm từ JavaScript -->
                     <tr>
-                        <td>#GD001</td>
-                        <td>
-                            <div class="customer-info">
-                                <img src="https://ui-avatars.com/api/?name=Minh+Nhự&background=2563eb&color=fff" alt="Avatar" class="avatar">
-                                <div>
-                                    <p class="customer-name">Minh Nhự</p>
-                                    <small class="customer-id">KH001</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Mercedes C200</td>
-                        <td>23/04/2025</td>
-                        <td>3 ngày</td>
-                        <td class="price">18,600,000đ</td>
-                        <td><span class="status-badge completed">Đã hoàn thành</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn-action btn-view" title="Xem chi tiết">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-action btn-print" title="In hóa đơn">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </div>
-                        </td>
+                        <td colspan="8" class="empty-message">Đang tải dữ liệu giao dịch...</td>
                     </tr>
-                    <!-- More transaction rows will be added dynamically -->
                 </tbody>
             </table>
         </div>
@@ -259,79 +233,17 @@
                 </button>
             </div>
         </div>
-    </div>
-
-    <script>
-        // Handle active menu item
-        document.querySelectorAll('.menu a').forEach(link => {
-            if (link.getAttribute('href') === location.pathname.split('/').pop()) {
-                link.classList.add('active');
-            }
-        });
-
-        // Filter handling
-        document.querySelectorAll('.filter-item').forEach(filter => {
-            filter.addEventListener('click', () => {
-                document.querySelector('.filter-item.active').classList.remove('active');
-                filter.classList.add('active');
-                // Implement filter logic here
-            });
-        });
-
+    </div>    <script>
         // Modal handling
         const modal = document.getElementById('transactionModal');
         const closeBtn = document.querySelector('.btn-close');
-        const viewBtns = document.querySelectorAll('.btn-view');
-
-        function openModal() {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
 
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        viewBtns.forEach(btn => btn.addEventListener('click', openModal));
         closeBtn.addEventListener('click', closeModal);
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const id = row.querySelector('td:first-child').textContent.toLowerCase();
-                const customer = row.querySelector('.customer-name').textContent.toLowerCase();
-                const car = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                
-                if (id.includes(searchTerm) || customer.includes(searchTerm) || car.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        // Print invoice functionality
-        function printInvoice() {
-            window.print();
-        }
-
-        // Export functionality
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            alert('Đang xuất báo cáo...');
-            // Implement export logic here
-        });
-
-        // Format currency
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
-            }).format(amount);
-        }
     </script>
 </body>
 </html>
